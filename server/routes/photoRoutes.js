@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const path = require('path');
-const db = require('../config/db');
+const {getPool} = require('../config/db');
 
 const router = express.Router();
 
@@ -23,7 +23,7 @@ router.post('/upload', upload.single('photo'), async (req, res) => {
   const imageUrl = `/uploads/${req.file.filename}`;
 
   try {
-    const [result] = await db.query(
+    const [result] = await getPool().query(
       'INSERT INTO photos (title, description, imageUrl) VALUES (?, ?, ?)',
       [title, description, imageUrl]
     );
@@ -37,7 +37,7 @@ router.post('/upload', upload.single('photo'), async (req, res) => {
 //  Get all photos
 router.get('/', async (req, res) => {
   try {
-    const [rows] = await db.query('SELECT * FROM photos');
+    const [rows] = await getPool().query('SELECT * FROM photos');
     res.status(200).json(rows);
   } catch (error) {
     console.error(error);
@@ -50,7 +50,7 @@ router.delete('/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
-    const [result] = await db.query('DELETE FROM photos WHERE id = ?', [id]);
+    const [result] = await getPool().query('DELETE FROM photos WHERE id = ?', [id]);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: 'Photo not found' });

@@ -20,7 +20,7 @@ const initDB = async () => {
       COLLATE utf8mb4_0900_ai_ci;
     `);
 
-    console.log(`✅ Database '${process.env.DB_NAME}' ensured.`);
+    console.log(` Database '${process.env.DB_NAME}' ensured.`);
 
     await connection.end();
 
@@ -58,10 +58,10 @@ const initDB = async () => {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
     `);
 
-    console.log("✅ Tables ensured (photos, users).");
+    console.log(" Tables ensured (photos, users).");
 
   } catch (err) {
-    console.error("❌ DB initialization failed:", err);
+    console.error(" DB initialization failed:", err);
   }
 };
 
